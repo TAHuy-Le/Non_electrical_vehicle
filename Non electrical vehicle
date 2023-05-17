@@ -29,6 +29,8 @@ from qgis.core import *
 from qgis.gui import *
 import pandas as pd
 import geopandas as gpd
+import openpyxl
+from openpyxl import *
 
 
 # Initialize Qt resources from file resources.py
@@ -190,6 +192,12 @@ class Non_electrical_vehicle:
             self.dlg, "Select output file ", "", '*.shp')
         self.dlg.lineEdit_2.setText(filename)
 
+    def select_data_file(self):
+        excel, _filter = QFileDialog.getSaveFileName(
+            self.dlg, "Select output file ", "", '*.xlsx')
+        self.dlg.lineEdit.setText(excel)
+
+
 
     def run(self):
         """Run method that performs all the real work"""
@@ -200,6 +208,7 @@ class Non_electrical_vehicle:
             self.first_start = False
             self.dlg = Non_electrical_vehicleDialog()
             self.dlg.pushButton.clicked.connect(self.select_output_file)
+            self.dlg.pushButton_2.clicked.connect(self.select_data_file)
         layers = QgsProject.instance().layerTreeRoot().children()
         self.dlg.comboBox.clear()
         self.dlg.comboBox.addItems([layer.name() for layer in layers])
@@ -211,7 +220,7 @@ class Non_electrical_vehicle:
         # See if OK was pressed
         if result:
             
-            excel_file = 'H:/HNEW/PRODUCTION/Doc type ENV/Air/Véhicule_non_électrique/Parc_IFSTTAR_2022-Coefficient-trefic.xlsx'
+            excel_file = self.dlg.lineEdit.text()
             wb = load_workbook(filename = excel_file, read_only = True, data_only = True)
             ws_AME = wb['AME']
             ws_AMS = wb['AMS']
