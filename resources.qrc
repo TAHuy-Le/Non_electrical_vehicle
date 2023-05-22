@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/Non_electrical_vehicle" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
